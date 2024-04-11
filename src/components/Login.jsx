@@ -50,18 +50,13 @@ function Login(props) {
       setNotifyErr(notify);
       return;
     }
-    console.log("formValue", formValue);
     axios
       .post("http://localhost:3579/api/v1/user/login", formValue)
       .then((res) => {
-        console.log(res.data);
         setLoginSuccess(true);
-        console.log(res.data.token);
         let a = res.data.data;
         let userLocal = { ...a, token: res.data.token };
         delete userLocal.password;
-        console.log(userLocal);
-        console.log("userLocal", userLocal);
         localStorage.setItem("userLocal", JSON.stringify(userLocal));
         setNotifyErr(notify);
         setTimeout(() => {
@@ -69,13 +64,8 @@ function Login(props) {
         }, 2000);
       })
       .catch((err) => {
-        if (err) {
           console.log(err);
-          console.log(err.response.data.message);
-          setMessage(err.response.data.message);
-        } else {
-          console.log("aaa");
-        }
+          setMessage(err.message);
       });
   };
   const [loginSuccess, setLoginSuccess] = useState(false);
